@@ -1,5 +1,5 @@
 import unittest
-from casa import Casa  # ajusta la ruta según tu proyecto
+from modelos import Casa  # ajusta la ruta según tu proyecto
 
 class TestCasa(unittest.TestCase):
     def test_inicializacion(self):
