@@ -20,7 +20,7 @@ Se recomienda usar **[OneCompiler](https://onecompiler.com/mysql)** para correr 
 
 ##  Pasos para ejecutar en OneCompiler  
 
-1. Ingresá a 👉 [OneCompiler - MySQL](https://onecompiler.com/mysql).  
+1. Ingresá a  [OneCompiler - MySQL](https://onecompiler.com/mysql).  
 
 2. Copiá y pegá el contenido de **`Estructura.sql`** en el editor de OneCompiler.  
    -  **Importante:** OneCompiler no permite crear bases nuevas ni usar `USE`.  
@@ -46,7 +46,7 @@ Se recomienda usar **[OneCompiler](https://onecompiler.com/mysql)** para correr 
 
 ---
 
-## 🗄️ Tablas principales  
+##  Tablas principales  
 - **rol** → Define los roles de los usuarios (Administrador / Usuario).  
 - **usuario** → Información de los usuarios y su rol.  
 - **casa** → Viviendas registradas.  
@@ -57,7 +57,7 @@ Se recomienda usar **[OneCompiler](https://onecompiler.com/mysql)** para correr 
 
 ---
 
-## 🖼️ Resultado esperado en OneCompiler
+##  Resultado esperado en OneCompiler
 
 Si ejecutaste correctamente los scripts (`Estructura.sql` y `Datos.sql`) en OneCompiler, deberías ver algo similar a esto en la consola:
 
@@ -66,5 +66,5 @@ Si ejecutaste correctamente los scripts (`Estructura.sql` y `Datos.sql`) en OneC
 > Cada tabla muestra los registros cargados, confirmando que los datos se insertaron correctamente.
 
 
-👨‍💻 Autor: *GRUPO M*
+ Autor: *GRUPO M*
 
