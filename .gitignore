@@ -15,3 +15,4 @@ env/
 # Configuración de VS Code
 .vscode/
 
+conn/config.py
