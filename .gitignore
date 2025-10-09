@@ -14,5 +14,5 @@ env/
 
 # Configuración de VS Code
 .vscode/
-
+#configuracion privada
 conn/config.py
