@@ -2,8 +2,8 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from modelos.usuario import Usuario
-from modelos.rol import Rol
+from dominio.usuario import Usuario
+from dominio.rol import Rol
 from typing import List, Optional
 from conn.db_conn import insert_query, execute_query, update_query, delete_query
 
