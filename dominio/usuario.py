@@ -1,6 +1,6 @@
 
 from typing import Optional
-from modelos.rol import Rol
+from dominio.rol import Rol
 
 ROL_POR_DEFECTO = Rol(1, "usuario", "Permisos básicos")
 
