@@ -3,6 +3,7 @@
 -- Descripción: Creación de tablas para el sistema de gestión de casas inteligentes
 -- Requiere que la base de datos 'smarthome_db' exista previamente
 
+
 USE smarthome_db;
 
 CREATE TABLE IF NOT EXISTS rol (

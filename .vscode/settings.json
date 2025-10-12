@@ -22,8 +22,7 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "smarthome_db",
-            "group": "smarthome_db",
+            "name": "Caro DataBase",
             "database": "smarthome_db",
             "username": "root",
             "password": "Caro88"

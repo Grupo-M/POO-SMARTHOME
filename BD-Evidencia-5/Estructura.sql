@@ -7,14 +7,16 @@ CREATE TABLE IF NOT EXISTS rol (
   descripcion VARCHAR(100)
 );
 
-CREATE TABLE IF NOT EXISTS usuario (
-  id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-  nombre_completo VARCHAR(100) NOT NULL,
-  email VARCHAR(100) NOT NULL UNIQUE,
-  contrasena VARCHAR(100) NOT NULL,
-  id_rol INT,
-  FOREIGN KEY (id_rol) REFERENCES rol(id_rol)
+CREATE TABLE usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    email VARCHAR(100),
+    contrasena VARCHAR(100),
+    id_rol INT,
+    FOREIGN KEY (id_rol) REFERENCES rol(id_rol)
 );
+
 
 CREATE TABLE IF NOT EXISTS casa (
   id_casa INT AUTO_INCREMENT PRIMARY KEY,
