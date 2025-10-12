@@ -1,3 +1,9 @@
+-- Archivo: datos_iniciales.sql
+-- Proyecto: SmartHome - Evidencia 6
+-- Descripción: Inserción de datos iniciales para poblar la base de datos smarthome_db
+-- Requiere que la base de datos y las tablas estén creadas previamente
+
+USE smarthome_db;
 
 -- Tabla: rol
 INSERT INTO rol (nombre, descripcion) VALUES

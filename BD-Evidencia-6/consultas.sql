@@ -1,5 +1,9 @@
+-- Archivo: consultas.sql
+-- Proyecto: SmartHome - Evidencia 6
+-- Descripción: Consultas SQL para verificación, análisis multitabla y subconsultas
+-- Requiere que la base de datos 'smarthome_db' esté creada y poblada previamente
 
-
+USE smarthome_db;
 
 --  CONSULTAS SIMPLES: Verificación de datos cargados
 SELECT * FROM rol;
