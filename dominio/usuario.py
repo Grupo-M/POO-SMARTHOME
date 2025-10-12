@@ -17,12 +17,14 @@ class Usuario:
 
     def __init__(self, nombre: str, apellido: str, email: str,
                  password: str, rol: Optional[Rol] = None, id_usuario: Optional[int] = None) -> None:
+
         self.id_usuario = id_usuario
         self.__nombre = nombre
         self.__apellido = apellido
         self.__email = email
         self.__password = password
         self.__rol = rol if rol else ROL_POR_DEFECTO
+
 
     @property
     def nombre(self) -> str:
