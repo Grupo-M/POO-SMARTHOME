@@ -1,7 +1,8 @@
 from dao.usuario_dao import UsuarioDAO
 from dao.dispositivo_dao import DispositivoDAO
-# Falta modulo de roles
-
+from dao import rol_dao  
+from dominio.rol import Rol
+from dominio.usuario import Usuario
 
 def menu_principal():
     print("\n--- SmartHome Solutions ---")
@@ -28,7 +29,49 @@ def menu_admin():
     print("5. Cerrar sesión")
     return input("Seleccione una opción: ")
 
-# Falta menu de roles 
+def menu_roles():
+    while True:
+        print("\n--- Gestión de Roles ---")
+        print("1. Listar roles")
+        print("2. Agregar nuevo rol")
+        print("3. Modificar rol existente")
+        print("4. Eliminar rol")
+        print("5. Volver al menú anterior")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            roles = rol_dao.listar_roles()
+            if roles:
+                for r in roles:
+                    print(f"ID: {r.id_rol} - Nombre: {r.nombre} - Descripción: {r.descripcion}")
+            else:
+                print("No hay roles registrados.")
+
+        elif opcion == "2":
+            id_rol = int(input("ID del nuevo rol: "))
+            nombre = input("Nombre del rol: ")
+            descripcion = input("Descripción: ")
+            nuevo_rol = Rol(id_rol, nombre, descripcion)
+            rol_dao.insertar_rol(nuevo_rol)
+            print("Rol agregado correctamente.")
+
+        elif opcion == "3":
+            id_rol = int(input("ID del rol a modificar: "))
+            nombre = input("Nuevo nombre: ")
+            descripcion = input("Nueva descripción: ")
+            rol_actualizado = Rol(id_rol, nombre, descripcion)
+            rol_dao.actualizar_rol(rol_actualizado)
+            print("Rol actualizado correctamente.")
+
+        elif opcion == "4":
+            id_rol = int(input("ID del rol a eliminar: "))
+            rol_dao.eliminar_rol(id_rol)
+            print("Rol eliminado correctamente.")
+
+        elif opcion == "5":
+            break
+        else:
+            print("Opción inválida.")
 
 
 def main():
