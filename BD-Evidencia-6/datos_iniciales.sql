@@ -75,6 +75,18 @@ INSERT INTO automatizacion (nombre) VALUES
 ('Activar persiana automática en cocina'),
 ('Encender Smart TV para modo cine');
 
+-- Dispositivos adicionales en Garage
+INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion) VALUES
+('Sensor de movimiento', 'encendido', true, 5),
+('Alarma sonora', 'apagado', true, 5);
+
+-- Dispositivos adicionales en Living
+INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion) VALUES
+('Parlante inteligente', 'encendido', false, 1),
+('Control de cortinas', 'apagado', false, 1);
+
+
+
 
 -- Automatización 1: Encender luces al anochecer → Lámpara LED (Living)
 INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (1, 1);

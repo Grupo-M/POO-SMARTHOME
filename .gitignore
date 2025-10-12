@@ -16,3 +16,4 @@ env/
 .vscode/
 #configuracion privada
 conn/config.py
+
