@@ -1,5 +1,6 @@
 from dao.usuario_dao import UsuarioDAO
 from dao.dispositivo_dao import DispositivoDAO
+# Falta modulo de roles
 
 
 def menu_principal():
@@ -26,3 +27,106 @@ def menu_admin():
     print("4. Eliminar dispositivo")
     print("5. Cerrar sesión")
     return input("Seleccione una opción: ")
+
+# Falta menu de roles 
+
+
+def main():
+    usuario_dao = UsuarioDAO()
+    dispositivo_dao = DispositivoDAO()
+
+    while True:
+        opcion = menu_principal()
+
+        if opcion == "1":
+            email = input("Ingrese su email: ")
+            usuario = usuario_dao.obtener_por_email(email)
+
+            if usuario:
+                print(f"\nBienvenido, {usuario.nombre} ({'Admin' if usuario.rol.id_rol == 1 else 'Usuario'})")
+
+                if usuario.rol.id_rol == 1:
+                    while True:
+                        op = menu_admin()
+
+                        if op == "1":
+                            dispositivos = dispositivo_dao.obtener_todos()
+                            if dispositivos:
+                                for d in dispositivos:
+                                    print(d)
+                            else:
+                                print("No hay dispositivos registrados.")
+
+                        elif op == "2":
+                            nombre = input("Nombre del dispositivo: ")
+                            tipo = input("Tipo (luz, cámara, etc.): ")
+                            estado = input("Estado inicial (encendido/apagado): ")
+                            dispositivo_dao.insertar_objeto(nombre, tipo, estado, usuario.id_usuario)
+                            print("Dispositivo agregado correctamente.")
+
+                        elif op == "3":
+                            id_disp = int(input("ID del dispositivo: "))
+                            nuevo_estado = input("Nuevo estado (encendido/apagado): ")
+                            dispositivo_dao.actualizar_estado(id_disp, nuevo_estado)
+                            print("Estado actualizado correctamente.")
+
+                        elif op == "4":
+                            id_disp = int(input("ID del dispositivo a eliminar: "))
+                            dispositivo_dao.eliminar(id_disp)
+                            print("Dispositivo eliminado correctamente.")
+
+                        elif op == "5":
+                            menu_roles()
+
+                        elif op == "6":
+                            print("Cerrando sesión de administrador...")
+                            break
+                        else:
+                            print("Opción inválida.")
+
+                else:
+                    while True:
+                        op = menu_usuario()
+                        if op == "1":
+                            print("\nDatos personales:")
+                            print(f"Nombre: {usuario.nombre} {usuario.apellido}")
+                            print(f"Email: {usuario.email}")
+                            print(f"Rol: {usuario.rol.nombre}")
+                        elif op == "2":
+                            dispositivos = dispositivo_dao.obtener_por_usuario(usuario.id_usuario)
+                            if dispositivos:
+                                for d in dispositivos:
+                                    print(d)
+                            else:
+                                print("No tenés dispositivos asignados.")
+                        elif op == "3":
+                            print("Cerrando sesión de usuario...")
+                            break
+                        else:
+                            print("Opción inválida.")
+            else:
+                print("Usuario no encontrado.")
+
+        elif opcion == "2":
+            nombre = input("Nombre: ")
+            apellido = input("Apellido: ")
+            email = input("Email: ")
+            password = input("Contraseña: ")
+
+            rol_usuario = Rol(2, "usuario", "Permisos básicos")
+            nuevo_usuario = Usuario(nombre, apellido, email, password, rol_usuario)
+            usuario_dao.guardar(nuevo_usuario)
+            print("Usuario registrado correctamente.")
+
+        elif opcion == "3":
+            print("Saliendo del sistema...")
+            break
+
+        else:
+            print("Opción inválida.")
+
+
+if __name__ == "__main__":
+    main()
+
+    
