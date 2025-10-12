@@ -17,26 +17,26 @@ class Usuario:
 
     def __init__(self, nombre: str, apellido: str, email: str,
                  password: str, rol: Optional[Rol] = None) -> None:
-        self._nombre = nombre
-        self._apellido = apellido
-        self._email = email
+        self.__nombre = nombre
+        self.__apellido = apellido
+        self.__email = email
         self.__password = password
         self.__rol = rol if rol else ROL_POR_DEFECTO
 
     @property
     def nombre(self) -> str:
         """Devuelve el nombre del usuario."""
-        return self._nombre
+        return self.__nombre
 
     @property
     def apellido(self) -> str:
         """Devuelve el apellido del usuario."""
-        return self._apellido
+        return self.__apellido
 
     @property
     def email(self) -> str:
         """Devuelve el email del usuario."""
-        return self._email
+        return self.__email
 
     @property
     def rol(self) -> Rol:

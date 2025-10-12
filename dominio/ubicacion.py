@@ -5,11 +5,11 @@ from dominio.dispositivo import Dispositivo
 class Ubicacion:
     # Clase Ubicacion: Representa un espacio físico dentro de la Casa (ejemplo: cocina, dormitorio).
 
-    def __init__(self, id_ubicacion: int, nombre: str, id_casa: int):
+    def __init__(self, id_ubicacion: int, nombre: str, casa: Casa):
         
         self.id_ubicacion: int = id_ubicacion    
         self.nombre: str = nombre
-        self.id_casa: int = id_casa               
+        self.__casa: Casa = casa               
         self.dispositivos: List[Dispositivo] = [] # Lista de dispositivos en esta ubicación
 
     def agregar_dispositivo(self, dispositivo: Dispositivo) -> None:
