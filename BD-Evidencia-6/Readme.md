@@ -8,7 +8,16 @@ Este repositorio contiene los archivos correspondientes a la Evidencia 6 del pro
 - `datos_iniciales.sql`: incluye los datos iniciales (INSERT) para poblar las tablas con roles, usuarios, casas, ubicaciones, dispositivos y automatizaciones.
 - `consultas.sql`: contiene consultas simples, multitabla y subconsultas, todas comentadas y justificadas según las necesidades del sistema.
 
+
 ##  Cómo ejecutar los scripts
+
+Para visualizar la estructura de la base de datos, los datos cargados y las consultas ejecutadas, simplemente accedé al siguiente enlace:
+
+🔗 [Ejecutar en OneCompiler](https://onecompiler.com/mysql/43zdbscvc)
+
+Una vez dentro, solo tenés que hacer clic en el botón **Run** para ejecutar todo el código. No es necesario copiar ni pegar nada.
+
+En caso de que el link no funcione puede ejecutar los scripts con estos pasos
 
 1. Ingresar a [OneCompiler MySQL](https://onecompiler.com/mysql).
 2. Verificar que el lenguaje seleccionado sea **MySQL**.
