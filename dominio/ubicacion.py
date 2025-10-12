@@ -1,15 +1,17 @@
 from typing import List
 from dominio.dispositivo import Dispositivo
+from dominio.casa import Casa
+
 
 
 class Ubicacion:
     # Clase Ubicacion: Representa un espacio físico dentro de la Casa (ejemplo: cocina, dormitorio).
 
-    def __init__(self, id_ubicacion: int, nombre: str, id_casa: int):
+    def __init__(self, id_ubicacion: int, nombre: str, casa: Casa):
         
         self.id_ubicacion: int = id_ubicacion    
         self.nombre: str = nombre
-        self.id_casa: int = id_casa               
+        self.__casa: Casa = casa               
         self.dispositivos: List[Dispositivo] = [] # Lista de dispositivos en esta ubicación
 
     def agregar_dispositivo(self, dispositivo: Dispositivo) -> None:
@@ -37,4 +39,4 @@ class Ubicacion:
             dispositivo.apagar()
 
     def __str__(self) -> str:
-        return f"Ubicación {self.nombre} (ID: {self.id_ubicacion}, Casa ID: {self.id_casa})"
+        return f"Ubicación {self.nombre} (ID: {self.id_ubicacion}, Casa ID: {self.__casa.id_casa})"

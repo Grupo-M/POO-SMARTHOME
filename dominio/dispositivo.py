@@ -6,7 +6,7 @@ class Dispositivo:
         self.nombre = nombre
         self.estado = "apagado"  # por defecto
         self.esencial = esencial
-        self.ubicacion = ubicacion
+        self.__ubicacion = ubicacion
 
     def encender(self):
         self.estado = "encendido"
