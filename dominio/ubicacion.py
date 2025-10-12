@@ -1,5 +1,7 @@
 from typing import List
 from dominio.dispositivo import Dispositivo
+from dominio.casa import Casa
+
 
 
 class Ubicacion:
@@ -37,4 +39,4 @@ class Ubicacion:
             dispositivo.apagar()
 
     def __str__(self) -> str:
-        return f"Ubicación {self.nombre} (ID: {self.id_ubicacion}, Casa ID: {self.id_casa})"
+        return f"Ubicación {self.nombre} (ID: {self.id_ubicacion}, Casa ID: {self.__casa.id_casa})"
