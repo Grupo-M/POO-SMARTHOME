@@ -11,7 +11,6 @@ def menu_principal():
     print("3. Salir")
     return input("Seleccione una opción: ")
 
-
 def menu_usuario():
     print("\n--- Menú Usuario Estándar ---")
     print("1. Ver mis datos personales")
@@ -19,14 +18,14 @@ def menu_usuario():
     print("3. Cerrar sesión")
     return input("Seleccione una opción: ")
 
-
 def menu_admin():
     print("\n--- Menú Administrador ---")
     print("1. Listar dispositivos")
     print("2. Agregar dispositivo")
     print("3. Modificar estado de dispositivo")
     print("4. Eliminar dispositivo")
-    print("5. Cerrar sesión")
+    print("5. Gestión de roles")
+    print("6. Cerrar sesión")
     return input("Seleccione una opción: ")
 
 def menu_roles():
@@ -73,7 +72,6 @@ def menu_roles():
         else:
             print("Opción inválida.")
 
-
 def main():
     usuario_dao = UsuarioDAO()
     dispositivo_dao = DispositivoDAO()
@@ -102,21 +100,35 @@ def main():
 
                         elif op == "2":
                             nombre = input("Nombre del dispositivo: ")
-                            tipo = input("Tipo (luz, cámara, etc.): ")
                             estado = input("Estado inicial (encendido/apagado): ")
-                            dispositivo_dao.insertar_objeto(nombre, tipo, estado, usuario.id_usuario)
-                            print("Dispositivo agregado correctamente.")
+                            esencial_input = input("¿Es esencial? (sí/no): ")
+                            esencial = 1 if esencial_input.lower() == "sí" else 0
+                            try:
+                                id_ubicacion = int(input("ID de ubicación: "))
+                                resultado = dispositivo_dao.insertar_objeto(nombre, estado, esencial, id_ubicacion)
+                                if resultado:
+                                    print("✅ Dispositivo agregado correctamente.")
+                                else:
+                                    print("❌ Error al agregar el dispositivo. Verificá los datos.")
+                            except ValueError:
+                                print("❌ ID de ubicación inválido. Debe ser un número.")
 
                         elif op == "3":
-                            id_disp = int(input("ID del dispositivo: "))
-                            nuevo_estado = input("Nuevo estado (encendido/apagado): ")
-                            dispositivo_dao.actualizar_estado(id_disp, nuevo_estado)
-                            print("Estado actualizado correctamente.")
+                            try:
+                                id_disp = int(input("ID del dispositivo: "))
+                                nuevo_estado = input("Nuevo estado (encendido/apagado): ")
+                                dispositivo_dao.actualizar_estado(id_disp, nuevo_estado)
+                                print("Estado actualizado correctamente.")
+                            except ValueError:
+                                print("❌ ID inválido.")
 
                         elif op == "4":
-                            id_disp = int(input("ID del dispositivo a eliminar: "))
-                            dispositivo_dao.eliminar(id_disp)
-                            print("Dispositivo eliminado correctamente.")
+                            try:
+                                id_disp = int(input("ID del dispositivo a eliminar: "))
+                                dispositivo_dao.eliminar(id_disp)
+                                print("Dispositivo eliminado correctamente.")
+                            except ValueError:
+                                print("❌ ID inválido.")
 
                         elif op == "5":
                             menu_roles()
@@ -158,8 +170,11 @@ def main():
 
             rol_usuario = Rol(2, "usuario", "Permisos básicos")
             nuevo_usuario = Usuario(nombre, apellido, email, password, rol_usuario)
-            usuario_dao.guardar(nuevo_usuario)
-            print("Usuario registrado correctamente.")
+
+            if usuario_dao.guardar(nuevo_usuario):
+                print("✅ Usuario registrado correctamente.")
+            else:
+                print("❌ Error al registrar el usuario. Verificá que la base tenga las columnas correctas.")
 
         elif opcion == "3":
             print("Saliendo del sistema...")
@@ -168,8 +183,6 @@ def main():
         else:
             print("Opción inválida.")
 
-
 if __name__ == "__main__":
     main()
 
-    

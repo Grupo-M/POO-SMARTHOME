@@ -16,7 +16,8 @@ class Usuario:
     """
 
     def __init__(self, nombre: str, apellido: str, email: str,
-                 password: str, rol: Optional[Rol] = None) -> None:
+                 password: str, rol: Optional[Rol] = None, id_usuario: Optional[int] = None) -> None:
+        self.id_usuario = id_usuario
         self.__nombre = nombre
         self.__apellido = apellido
         self.__email = email
@@ -51,7 +52,7 @@ class Usuario:
     def modificar_rol(self, nuevo_rol: Rol) -> None:
         """Actualiza el rol del usuario usando el setter."""
         self.rol = nuevo_rol
-        
+
     @property
     def password(self) -> str:
         """Devuelve la contraseña del usuario."""
@@ -65,9 +66,6 @@ class Usuario:
         self.__password = nueva_password
 
     def validar_credenciales(self, email: str, password: str) -> bool:
-        """
-        Verifica si las credenciales coinciden con las del usuario.
-        """
-        return self._email == email and self.__password == password
-
+        """Verifica si las credenciales coinciden con las del usuario."""
+        return self.__email == email and self.__password == password
 
