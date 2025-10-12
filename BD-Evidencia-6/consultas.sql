@@ -1,5 +1,5 @@
 
-USE smarthome_db;
+
 
 --  CONSULTAS SIMPLES: Verificación de datos cargados
 SELECT * FROM rol;

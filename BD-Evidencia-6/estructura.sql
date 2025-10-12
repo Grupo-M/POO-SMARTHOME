@@ -1,6 +1,4 @@
 
-USE smarthome_db;
-
 CREATE TABLE IF NOT EXISTS rol (
     id_rol INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
