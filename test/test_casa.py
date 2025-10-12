@@ -1,5 +1,5 @@
 import unittest
-from modelos import Casa  
+from dominio import Casa  
 
 class TestCasa(unittest.TestCase):
     def test_inicializacion(self):

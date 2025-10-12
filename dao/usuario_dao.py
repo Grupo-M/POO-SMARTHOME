@@ -1,11 +1,14 @@
+
 import sys
 import os
+from typing import List, Optional
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from dominio.usuario import Usuario
 from dominio.rol import Rol
-from typing import List, Optional
 from conn.db_conn import insert_query, execute_query, update_query, delete_query
+from dao.rol_dao import obtener_rol_por_id
+
+
 
 class UsuarioDAO:
     def guardar(self, usuario: Usuario) -> None:
@@ -30,12 +33,12 @@ class UsuarioDAO:
             FROM usuarios
             WHERE email = %s
         """
-        resultados = execute_query(query % f"'{email}'")  # Armamos el query con el email
+        resultados = execute_query(query, (email,))
 
         if resultados and len(resultados) > 0:
             nombre, apellido, email, password, id_rol = resultados[0]
             rol = Rol(id_rol, "usuario", "Permisos básicos")
-            return Usuario(nombre, apellido, email, password, rol)
+            return Usuario(nombre, apellido, email, password, rol) # type: ignore
         return None
 
     def listar_todos(self) -> List[Usuario]:
@@ -50,8 +53,8 @@ class UsuarioDAO:
         if resultados:
             for fila in resultados:
                 nombre, apellido, email, password, id_rol = fila
-                rol = Rol(id_rol, "usuario", "Permisos básicos")
-                usuario = Usuario(nombre, apellido, email, password, rol)
+                rol = Rol(id_rol, "usuario", "Permisos básicos") # type: ignore
+                usuario = Usuario(nombre, apellido, email, password, rol) # type: ignore
                 usuarios.append(usuario)
         return usuarios
 

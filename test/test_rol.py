@@ -2,7 +2,7 @@ import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from modelos.rol import Rol
+from dominio.rol import Rol
 
 def test_creacion_rol():
     rol = Rol(1, "Administrador", "Acceso total al sistema")

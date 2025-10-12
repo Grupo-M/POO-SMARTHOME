@@ -1,8 +1,11 @@
-#rol_dao
-
+"""
+rol_dao.py
+Funciones CRUD para la entidad Rol en la base de datos SmartHome.
+"""
+from typing import Optional, List
 from dominio.rol import Rol
 from conn.db_conn import execute_query, insert_query, update_query, delete_query
-from typing import Optional, List
+
 
 
 def insertar_rol(rol: Rol) -> bool:
@@ -18,11 +21,14 @@ def insertar_rol(rol: Rol) -> bool:
 def obtener_rol_por_id(id_rol: int) -> Optional[Rol]:
     """Devuelve un objeto Rol según su ID."""
     query = "SELECT id_rol, nombre, descripcion FROM roles WHERE id_rol = %s"
-    resultados = execute_query(query % id_rol)  # O adaptar execute_query para usar parámetros
+    resultados = resultados = execute_query(query, (id_rol,))
+
+
     if resultados:
-        id_rol, nombre, descripcion = resultados[0]
-        return Rol(id_rol, nombre, descripcion)
+        id_rol, nombre, descripcion = resultados[0] # type: ignore
+        return Rol(id_rol, nombre, descripcion) # type: ignore
     return None
+
 
 def listar_roles() -> List[Rol]:
     """Devuelve una lista de todos los roles registrados."""
@@ -32,7 +38,7 @@ def listar_roles() -> List[Rol]:
     if resultados:
         for fila in resultados:
             id_rol, nombre, descripcion = fila
-            roles.append(Rol(id_rol, nombre, descripcion))
+            roles.append(Rol(id_rol, nombre, descripcion)) # type: ignore
     return roles
 
 
@@ -51,5 +57,5 @@ def eliminar_rol(id_rol: int) -> bool:
     """Elimina un rol de la base de datos según su ID."""
     query = "DELETE FROM roles WHERE id_rol = %s"
     params = (id_rol,)
+    return delete_query(query, params)
 
-    return delete_query(query,params)

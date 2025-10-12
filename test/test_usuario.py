@@ -4,8 +4,8 @@ Verifica creación, validación de credenciales y modificación de rol.
 """
 
 # pylint: disable=import-error, missing-function-docstring, invalid-name
-from modelos.usuario import Usuario, ROL_POR_DEFECTO
-from modelos.rol import Rol
+from dominio.usuario import Usuario, ROL_POR_DEFECTO
+from dominio.rol import Rol
 
 
 def test_crear_usuario():

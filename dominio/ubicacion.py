@@ -1,5 +1,5 @@
 from typing import List
-from modelos.dispositivo import Dispositivo
+from dominio.dispositivo import Dispositivo
 
 
 class Ubicacion:

@@ -43,13 +43,13 @@ def create_connection():
             raise ConnectionError("La base de datos no existe.") from err
         raise ConnectionError("Error al conectar con la base de datos.") from err
 
-def execute_query(query):
+def execute_query(query, params=None):
     """Ejecuta una consulta SELECT y devuelve los resultados."""
-    logger.debug("Ejecutando SELECT: %s", query)
+    logger.debug("Ejecutando SELECT: %s | Parámetros: %s", query, params)
     conn = create_connection()
     try:
         with conn.cursor() as cursor:
-            cursor.execute(query)
+            cursor.execute(query, params) # type: ignore
             result = cursor.fetchall()
             logger.debug("Consulta ejecutada correctamente, %d registros obtenidos.", len(result))
             return result
@@ -59,6 +59,7 @@ def execute_query(query):
     finally:
         conn.close()
         logger.debug("Conexión cerrada")
+
 
 def insert_query(query, params):
     """Ejecuta una consulta INSERT con parámetros."""

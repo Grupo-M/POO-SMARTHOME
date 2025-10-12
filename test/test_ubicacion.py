@@ -1,6 +1,6 @@
 import unittest
-from modelos import Ubicacion
-from modelos import Dispositivo
+from dominio import Ubicacion
+from dominio import Dispositivo
 
 
 class TestUbicacion(unittest.TestCase):
