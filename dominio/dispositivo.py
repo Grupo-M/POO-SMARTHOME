@@ -1,4 +1,5 @@
 from dominio import ubicacion
+
 class Dispositivo:
     def __init__(self, id_dispositivo: int, nombre: str, esencial: bool, ubicacion: ubicacion):
         self.id_dispositivo = id_dispositivo

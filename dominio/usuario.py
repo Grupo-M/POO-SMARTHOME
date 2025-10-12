@@ -48,6 +48,10 @@ class Usuario:
         """Modifica el rol del usuario."""
         self.__rol = nuevo_rol
 
+    def modificar_rol(self, nuevo_rol: Rol) -> None:
+        """Actualiza el rol del usuario usando el setter."""
+        self.rol = nuevo_rol
+        
     @property
     def password(self) -> str:
         """Devuelve la contraseña del usuario."""
