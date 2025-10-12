@@ -157,12 +157,12 @@ if __name__ == "__main__":
     try:
         resultados = execute_query("SHOW TABLES;")
         if resultados:
-            print("✅ Conexión exitosa. Tablas en la base de datos:")
+            print(" Conexión exitosa. Tablas en la base de datos:")
             for fila in resultados:
                 print(f" - {fila[0]}")
         else:
-            print("⚠️ La base existe pero no tiene tablas.")
+            print(" La base existe pero no tiene tablas.")
     except ConnectionError as e:
-        print("🚫 No se pudo conectar a la base de datos.")
-        print("💡 Posible causa: la base 'smarthome_db' no existe.")
-        print("👉 Solución: ejecutá primero setup.py para crearla automáticamente.")
+        print(" No se pudo conectar a la base de datos.")
+        print(" Posible causa: la base 'smarthome_db' no existe.")
+        print(" Solución: ejecutá primero setup.py para crearla automáticamente.")

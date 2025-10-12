@@ -107,11 +107,11 @@ def main():
                                 id_ubicacion = int(input("ID de ubicación: "))
                                 resultado = dispositivo_dao.insertar_objeto(nombre, estado, esencial, id_ubicacion)
                                 if resultado:
-                                    print("✅ Dispositivo agregado correctamente.")
+                                    print(" Dispositivo agregado correctamente.")
                                 else:
-                                    print("❌ Error al agregar el dispositivo. Verificá los datos.")
+                                    print(" Error al agregar el dispositivo. Verificá los datos.")
                             except ValueError:
-                                print("❌ ID de ubicación inválido. Debe ser un número.")
+                                print(" ID de ubicación inválido. Debe ser un número.")
 
                         elif op == "3":
                             try:
@@ -120,7 +120,7 @@ def main():
                                 dispositivo_dao.actualizar_estado(id_disp, nuevo_estado)
                                 print("Estado actualizado correctamente.")
                             except ValueError:
-                                print("❌ ID inválido.")
+                                print(" ID inválido.")
 
                         elif op == "4":
                             try:
@@ -128,7 +128,7 @@ def main():
                                 dispositivo_dao.eliminar(id_disp)
                                 print("Dispositivo eliminado correctamente.")
                             except ValueError:
-                                print("❌ ID inválido.")
+                                print(" ID inválido.")
 
                         elif op == "5":
                             menu_roles()
@@ -172,9 +172,9 @@ def main():
             nuevo_usuario = Usuario(nombre, apellido, email, password, rol_usuario)
 
             if usuario_dao.guardar(nuevo_usuario):
-                print("✅ Usuario registrado correctamente.")
+                print(" Usuario registrado correctamente.")
             else:
-                print("❌ Error al registrar el usuario. Verificá que la base tenga las columnas correctas.")
+                print(" Error al registrar el usuario. Verificá que la base tenga las columnas correctas.")
 
         elif opcion == "3":
             print("Saliendo del sistema...")

@@ -13,7 +13,7 @@ Este repositorio contiene los archivos correspondientes a la Evidencia 6 del pro
 
 Para visualizar la estructura de la base de datos, los datos cargados y las consultas ejecutadas, simplemente accedé al siguiente enlace:
 
-🔗 [Ejecutar en OneCompiler](https://onecompiler.com/mysql/43zdbscvc)
+ [Ejecutar en OneCompiler](https://onecompiler.com/mysql/43zdbscvc)
 
 Una vez dentro, solo tenés que hacer clic en el botón **Run** para ejecutar todo el código. No es necesario copiar ni pegar nada.
 
@@ -27,7 +27,7 @@ En caso de que el link no funcione puede ejecutar los scripts con estos pasos
    - Tercero: `consultas.sql` (ejecución de consultas)
 4. Verificar los resultados en la consola de salida.
 
-> ⚠️ Importante: No se debe incluir `USE smarthome_db;` en los scripts, ya que OneCompiler no permite cambiar de base de datos.
+>  Importante: No se debe incluir `USE smarthome_db;` en los scripts, ya que OneCompiler no permite cambiar de base de datos.
 
 ---
 

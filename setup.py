@@ -18,7 +18,7 @@ tablas = [
     "automatizacion_dispositivo"
 ]
 
-print("\n📋 Verificación de carga:")
+print("\n Verificación de carga:")
 for tabla in tablas:
     resultado = execute_query(f"SELECT COUNT(*) FROM {tabla}")
     if resultado:
