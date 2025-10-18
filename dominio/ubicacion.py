@@ -2,41 +2,54 @@ from typing import List
 from dominio.dispositivo import Dispositivo
 from dominio.casa import Casa
 
-
-
 class Ubicacion:
-    # Clase Ubicacion: Representa un espacio físico dentro de la Casa (ejemplo: cocina, dormitorio).
-
     def __init__(self, id_ubicacion: int, nombre: str, casa: Casa):
+        self.__id_ubicacion = id_ubicacion
+        self.__nombre = nombre
+        self.__casa = casa
+        self.__dispositivos: List[Dispositivo] = []
+
+    @property
+    def id_ubicacion(self) -> int:
+        return self.__id_ubicacion
+
+    @property
+    def nombre(self) -> str:
+        return self.__nombre
+
+    @nombre.setter
+    def nombre(self, nuevo_nombre: str) -> None:
+        self.__nombre = nuevo_nombre  
+
+    @property
+    def casa(self) -> Casa:
+        return self.__casa
+
+    @property
+    def dispositivos(self) -> List[Dispositivo]:
         
-        self.id_ubicacion: int = id_ubicacion    
-        self.nombre: str = nombre
-        self.__casa: Casa = casa               
-        self.dispositivos: List[Dispositivo] = [] # Lista de dispositivos en esta ubicación
+        return self.__dispositivos.copy()
 
     def agregar_dispositivo(self, dispositivo: Dispositivo) -> None:
-        # Agrega un dispositivo a la ubicación si no está ya presente
-        if dispositivo not in self.dispositivos:
-            self.dispositivos.append(dispositivo)
+        if dispositivo not in self.__dispositivos:
+            self.__dispositivos.append(dispositivo)
 
     def eliminar_dispositivo(self, dispositivo: Dispositivo) -> None:
-        # Elimina un dispositivo de la ubicación si está presente
-        if dispositivo in self.dispositivos:
-            self.dispositivos.remove(dispositivo)
+        if dispositivo in self.__dispositivos:
+            self.__dispositivos.remove(dispositivo)
 
     def listar_dispositivos(self) -> List[str]:
-        # Devuelve una lista con los nombres de los dispositivos de la ubicación
-        return [d.nombre for d in self.dispositivos]
+        return [d.nombre for d in self.__dispositivos]
 
     def encender(self) -> None:
-        # Enciende todos los dispositivos de la ubicación
-        for dispositivo in self.dispositivos:
+        for dispositivo in self.__dispositivos:
             dispositivo.encender()
 
     def apagar(self) -> None:
-        # Apaga todos los dispositivos de la ubicación
-        for dispositivo in self.dispositivos:
+        for dispositivo in self.__dispositivos:
             dispositivo.apagar()
 
     def __str__(self) -> str:
-        return f"Ubicación {self.nombre} (ID: {self.id_ubicacion}, Casa ID: {self.__casa.id_casa})"
+        return f"Ubicación {self.__nombre} (ID: {self.__id_ubicacion}, Casa ID: {self.__casa.id_casa})"
+
+
