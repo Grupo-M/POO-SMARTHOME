@@ -18,13 +18,16 @@ class Usuario:
     def __init__(self, nombre: str, apellido: str, email: str,
                  password: str, rol: Optional[Rol] = None, id_usuario: Optional[int] = None) -> None:
 
-        self.id_usuario = id_usuario
+        self.__id_usuario = id_usuario
         self.__nombre = nombre
         self.__apellido = apellido
         self.__email = email
         self.__password = password
         self.__rol = rol if rol else ROL_POR_DEFECTO
 
+    @property
+    def id_usuario(self) -> Optional[int]:
+        return self.__id_usuario
 
     @property
     def nombre(self) -> str:
@@ -50,10 +53,6 @@ class Usuario:
     def rol(self, nuevo_rol: Rol) -> None:
         """Modifica el rol del usuario."""
         self.__rol = nuevo_rol
-
-    def modificar_rol(self, nuevo_rol: Rol) -> None:
-        """Actualiza el rol del usuario usando el setter."""
-        self.rol = nuevo_rol
 
     @property
     def password(self) -> str:
