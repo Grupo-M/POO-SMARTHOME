@@ -22,7 +22,7 @@ print("\n Verificación de carga:")
 for tabla in tablas:
     resultado = execute_query(f"SELECT COUNT(*) FROM {tabla}")
     if resultado:
-        print(f" - {tabla}: {resultado[0][0]} registros")
+        print(f" - {tabla}: {resultado[0][0]} registros") # type: ignore
     else:
         print(f" - {tabla}: error al consultar")
 
