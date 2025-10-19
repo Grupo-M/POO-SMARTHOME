@@ -26,7 +26,7 @@ def menu_usuario():
     print("3. Cerrar sesión")
     return input("Seleccione una opción: ")
 
-def menu_admin():
+def menu_administrador():
     print("\n--- Menú Administrador ---")
     print("1. Listar dispositivos")
     print("2. Agregar dispositivo")
@@ -147,7 +147,7 @@ def main():
 
                 if usuario.rol.id_rol == 1:  # Administrador
                     while True:
-                        op = menu_admin()
+                        op = menu_administrador()
                         if op == "1":
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:

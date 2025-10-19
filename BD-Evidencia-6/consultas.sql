@@ -18,9 +18,11 @@ SELECT * FROM automatizacion_dispositivo;
 
 -- 1. Usuarios y sus roles
 -- Muestra el rol asignado a cada usuario, útil para verificar permisos y responsabilidades dentro del sistema.
-SELECT u.nombre_completo, u.email, r.nombre AS rol
+SELECT u.nombre, u.apellido, u.email, r.nombre AS rol
 FROM usuario u
 JOIN rol r ON u.id_rol = r.id_rol;
+
+
 
 -- 2. Dispositivos y su ubicación
 -- Permite visualizar el estado de cada dispositivo según su ubicación física dentro de la casa. Útil para mantenimiento y control por zonas.
