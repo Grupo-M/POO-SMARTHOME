@@ -38,12 +38,13 @@ JOIN dispositivo d ON u.id_ubicacion = d.id_ubicacion
 GROUP BY u.nombre
 ORDER BY cantidad_dispositivos DESC;
 
--- 4. Automatizaciones y dispositivos vinculados
--- Muestra qué dispositivos están automatizados y cómo, útil para monitoreo y revisión de reglas activas.
-SELECT a.nombre AS automatizacion, d.nombre AS dispositivo
-FROM automatizacion_dispositivo ad
-JOIN automatizacion a ON ad.id_automatizacion = a.id_automatizacion
-JOIN dispositivo d ON ad.id_dispositivo = d.id_dispositivo;
+-- 4. Dispositivos con su ubicación y casa asociada
+-- Muestra cada dispositivo junto con su ubicación específica y la casa a la que pertenece. Útil para visualizar el contexto físico completo de cada dispositivo.
+SELECT d.nombre AS dispositivo, d.estado, u.nombre AS ubicacion, c.nombre AS casa
+FROM dispositivo d
+JOIN ubicacion u ON d.id_ubicacion = u.id_ubicacion
+JOIN casa c ON u.id_casa = c.id_casa;
+
 
 --  SUBCONSULTAS
 
