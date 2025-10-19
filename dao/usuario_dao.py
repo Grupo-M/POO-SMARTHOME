@@ -2,6 +2,7 @@ from dominio.usuario import Usuario
 from dominio.rol import Rol
 from typing import List, Optional
 from conn.db_conn import insert_query, execute_query, update_query, delete_query
+
 class UsuarioDAO:
 
     def guardar(self, usuario: Usuario) -> bool:
@@ -18,33 +19,52 @@ class UsuarioDAO:
         )
         return insert_query(query, valores)
 
-
     def obtener_por_email(self, email: str) -> Optional[Usuario]:
         query = """
-            SELECT nombre, apellido, email, password, id_rol
-            FROM usuario
-            WHERE email = %s
+            SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.password,
+                   r.id_rol, r.nombre, r.descripcion
+            FROM usuario u
+            JOIN rol r ON u.id_rol = r.id_rol
+            WHERE u.email = %s
         """
         resultados = execute_query(query, (email,))
-        if resultados and len(resultados) > 0:
-            nombre, apellido, email, password, id_rol = resultados[0]
-            rol = Rol(id_rol, "usuario", "Permisos básicos")
-            return Usuario(nombre, apellido, email, password, rol) # type: ignore
+        if resultados:
+            fila = resultados[0]
+            id_usuario, nombre, apellido, email, password, id_rol, rol_nombre, rol_descripcion = fila
+            rol = Rol(id_rol, rol_nombre, rol_descripcion)
+            return Usuario(nombre, apellido, email, password, rol, id_usuario=id_usuario)
+        return None
+
+    def obtener_por_id(self, id_usuario: int) -> Optional[Usuario]:
+        query = """
+            SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.password,
+                   r.id_rol, r.nombre, r.descripcion
+            FROM usuario u
+            JOIN rol r ON u.id_rol = r.id_rol
+            WHERE u.id_usuario = %s
+        """
+        resultados = execute_query(query, (id_usuario,))
+        if resultados:
+            fila = resultados[0]
+            id_usuario, nombre, apellido, email, password, id_rol, rol_nombre, rol_descripcion = fila
+            rol = Rol(id_rol, rol_nombre, rol_descripcion)
+            return Usuario(nombre, apellido, email, password, rol, id_usuario=id_usuario)
         return None
 
     def listar_todos(self) -> List[Usuario]:
         query = """
-            SELECT nombre, apellido, email, password, id_rol
-            FROM usuario
+            SELECT u.id_usuario, u.nombre, u.apellido, u.email, u.password,
+                   r.id_rol, r.nombre, r.descripcion
+            FROM usuario u
+            JOIN rol r ON u.id_rol = r.id_rol
         """
         resultados = execute_query(query)
         usuarios = []
         if resultados:
             for fila in resultados:
-                nombre, apellido, email, password, id_rol = fila
-                rol = Rol(id_rol, "usuario", "Permisos básicos") # type: ignore
-                usuario = Usuario(nombre, apellido, email, password, rol) # type: ignore
-                usuarios.append(usuario)
+                id_usuario, nombre, apellido, email, password, id_rol, rol_nombre, rol_descripcion = fila
+                rol = Rol(id_rol, rol_nombre, rol_descripcion)
+                usuarios.append(Usuario(nombre, apellido, email, password, rol, id_usuario=id_usuario))
         return usuarios
 
     def modificar(self, usuario: Usuario) -> None:
@@ -62,9 +82,12 @@ class UsuarioDAO:
         )
         update_query(query, valores)
 
+    def cambiar_rol(self, id_usuario: int, nuevo_rol: Rol) -> bool:
+        query = "UPDATE usuario SET id_rol = %s WHERE id_usuario = %s"
+        return update_query(query, (nuevo_rol.id_rol, id_usuario))
+
     def eliminar_por_email(self, email: str) -> None:
         query = "DELETE FROM usuario WHERE email = %s"
-        valores = (email,)
-        delete_query(query, valores)
+        delete_query(query, (email,))
 
-        
+

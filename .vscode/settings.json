@@ -11,21 +11,5 @@
     "python.testing.pytestArgs": [
         "test"
     ],
-    "sqltools.connections": [
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "ssh": "Disabled",
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 3306,
-            "driver": "MySQL",
-            "name": "Caro DataBase",
-            "database": "smarthome_db",
-            "username": "root",
-            "password": "Caro88"
-        }
-    ]
+    "sqltools.connections": []
 }
