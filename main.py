@@ -1,15 +1,15 @@
 from dao.usuario_dao import UsuarioDAO
-from dao.dispositivo_dao import DispositivoDAO
-from dao.ubicacion_dao import UbicacionDAO
 from dao.rol_dao import RolDAO
+from dao.ubicacion_dao import UbicacionDAO
 from dominio.rol import Rol
 from dominio.usuario import Usuario
+from dominio.gestor_dispositivos import GestorDispositivos
 
-# Instancias DAO
+# Instancias DAO y gestor
 usuario_dao = UsuarioDAO()
-dispositivo_dao = DispositivoDAO()
-ubicacion_dao = UbicacionDAO()
 rol_dao = RolDAO()
+ubicacion_dao = UbicacionDAO()
+gestor_dispositivos = GestorDispositivos()
 
 # --- Menús ---
 def menu_principal():
@@ -148,21 +148,90 @@ def main():
                 if usuario.rol.id_rol == 1:  # Administrador
                     while True:
                         op = menu_admin()
-                        if op == "5":
+                        if op == "1":
+                            dispositivos = gestor_dispositivos.listar_dispositivos()
+                            if dispositivos:
+                                for d in dispositivos:
+                                    print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                            else:
+                                print("No hay dispositivos registrados.")
+                        elif op == "2":
+                            nombre = input("Nombre del dispositivo: ")
+                            estado = input("Estado inicial (encendido/apagado): ").lower()
+                            esencial = input("¿Es esencial? (s/n): ").lower() == "s"
+                            ubicaciones = ubicacion_dao.obtener_todas()
+                            print("Ubicaciones disponibles:")
+                            for u in ubicaciones:
+                                print(f"{u.id_ubicacion} - {u.nombre}")
+                            try:
+                                id_ubicacion = int(input("ID de ubicación: "))
+                                if gestor_dispositivos.agregar_dispositivo(nombre, estado, esencial, id_ubicacion):
+                                    print("Dispositivo agregado correctamente.")
+                                else:
+                                    print("Error al agregar el dispositivo.")
+                            except ValueError:
+                                print("ID inválido.")
+                        elif op == "3":
+                            dispositivos = gestor_dispositivos.listar_dispositivos()
+                            if dispositivos:
+                                print("\nDispositivos disponibles:")
+                                for d in dispositivos:
+                                    print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                                try:
+                                    id_disp = int(input("\nID del dispositivo a modificar: "))
+                                    nuevo_estado = input("Nuevo estado (encendido/apagado): ").lower()
+                                    if gestor_dispositivos.cambiar_estado(id_disp, nuevo_estado):
+                                        print("Estado actualizado.")
+                                    else:
+                                        print("Error al actualizar el estado.")
+                                except ValueError:
+                                    print("ID inválido.")
+                            else:
+                                print("No hay dispositivos registrados.")
+
+                        elif op == "4":
+                                    dispositivos = gestor_dispositivos.listar_dispositivos()
+                                    if dispositivos:
+                                        print("\nDispositivos disponibles:")
+                                        for d in dispositivos:
+                                            print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                                        try:
+                                            id_disp = int(input("\nID del dispositivo a eliminar: "))
+                                            if gestor_dispositivos.eliminar_dispositivo(id_disp):
+                                                print("Dispositivo eliminado.")
+                                            else:
+                                                print("Error al eliminar el dispositivo.")
+                                        except ValueError:
+                                            print("ID inválido.")
+                                    else:
+                                         print("No hay dispositivos registrados.")
+
+                        elif op == "5":
                             menu_roles()
                         elif op == "6":
                             print("Cerrando sesión de administrador...")
                             break
                         else:
-                            print("Funcionalidad de dispositivos omitida para este ejemplo.")
+                            print("Opción inválida.")
                 else:  # Usuario estándar
                     while True:
                         op = menu_usuario()
-                        if op == "3":
+                        if op == "1":
+                            print(f"Nombre: {usuario.nombre} {usuario.apellido}")
+                            print(f"Email: {usuario.email}")
+                            print(f"Rol: {usuario.rol.nombre}")
+                        elif op == "2":
+                            dispositivos = gestor_dispositivos.listar_por_usuario(usuario.id_usuario)
+                            if dispositivos:
+                                for d in dispositivos:
+                                    print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                            else:
+                                print("No tenés dispositivos asignados.")
+                        elif op == "3":
                             print("Cerrando sesión de usuario...")
                             break
                         else:
-                            print("Funcionalidad omitida para este ejemplo.")
+                            print("Opción inválida.")
             else:
                 print("Credenciales incorrectas. Intente nuevamente.")
 
@@ -185,8 +254,7 @@ def main():
         else:
             print("Opción inválida.")
 
+
+
 if __name__ == "__main__":
     main()
-
-
-

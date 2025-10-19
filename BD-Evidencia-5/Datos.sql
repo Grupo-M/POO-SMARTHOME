@@ -1,63 +1,61 @@
-USE `POO-SmartHome`;
+-- Roles
+INSERT INTO rol (id_rol, nombre, descripcion) VALUES
+(1, 'administrador', 'Acceso completo al sistema'),
+(2, 'usuario', 'Permisos básicos para controlar dispositivos');
 
-INSERT INTO rol (nombre, descripcion) VALUES
-('Administrador', 'Acceso total al sistema'),
-('Usuario', 'Acceso limitado a sus dispositivos');
-
+-- Casas
 INSERT INTO casa (nombre, direccion) VALUES
-('Casa Principal', 'Av. Siempre Viva 123'),
-('Casa de Verano', 'Ruta Provincial S/N');
+('Casa Carolina', 'Av. Córdoba 123, Almafuerte'),
+('Casa Julia', 'Calle San Martín 456, Almafuerte'),
+('Casa Martin', 'Parque Industrial 789, Río Tercero'),
+('Casa Micaela', 'Ruta 5 km 12, Embalse'),
+('Casa Solange', 'Calle Las Heras 321, Villa María'),
+('Casa Catalina', 'Av. del Sol 999, San Luis'),
+('Casa Matias', 'Calle Tucumán 88, Córdoba Capital'),
+('Casa Rocio', 'Calle Belgrano 77, Alta Gracia'),
+('Casa Facundo', 'Av. General Paz 1000, Córdoba'),
+('Casa Diego', 'Av Libertadores 365, Córdoba');
 
+-- Usuarios
+-- Administrador inicial
+INSERT INTO usuario (nombre, apellido, email, password, id_rol) VALUES
+('Carolina', 'Lanfranco', 'caro14@gmail.com', 'Oreo4', 1);
+
+-- Usuarios estándar
+INSERT INTO usuario (nombre, apellido, email, password, id_rol) VALUES
+('Julia', 'Lanfranco', 'julia2@gmail.com', 'cooni123', 2),
+('Martín', 'Paez', 'martin_Paez@gmail.com', 'Polar123', 2),
+('Micaela', 'Lopez', 'micalopez@gmail.com', 'Luna456', 2),
+('Solange', 'Martinez', 'Solange@gmail.com', 'Estrella7', 2),
+('Catalina', 'Arnosio', 'Cataarno@gmail.com', 'Hups82', 2),
+('Matias', 'Rodriguez', 'MatiRo@gmail.com', 'nose69', 2),
+('Rocio', 'Altamirano', 'Rochi@gmail.com', 'jaja2', 2),
+('Facundo', 'Rodriguez', 'facu.r@gmail.com', 'Luchi5', 2),
+('Diego', 'Cordoba', 'DiegoCord@gmail.com', 'Ave78', 2);
+
+-- Ubicaciones
 INSERT INTO ubicacion (nombre, id_casa) VALUES
-('Cocina', 1),
-('Dormitorio 1', 1),
 ('Living', 1),
-('Terraza', 2),
-('Garage', 2);
+('Cocina', 2),
+('Dormitorio Principal', 3),
+('Baño', 4),
+('Garage', 5),
+('Lavadero', 6),
+('Oficina', 7),
+('Patio', 8),
+('Comedor', 9),
+('Quincho', 10);
 
+-- Dispositivos de ejemplo
 INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion) VALUES
-('Luz cocina', 'apagado', TRUE, 1),
-('Televisor', 'encendido', FALSE, 3),
-('Aire acondicionado', 'apagado', TRUE, 2),
-('Cámara seguridad', 'encendido', TRUE, 5),
-('Ventilador', 'apagado', FALSE, 2),
-('Microondas', 'encendido', FALSE, 1),
-('Router WiFi', 'encendido', TRUE, 3),
-('Sensor de movimiento', 'apagado', TRUE, 4);
+('Lámpara LED', 'encendido', true, 1),
+('Persiana automática', 'apagado', true, 2),
+('Aire acondicionado', 'apagado', false, 3),
+('Extractor de aire', 'encendido', true, 4),
+('Cámara de seguridad', 'encendido', true, 5),
+('Termotanque', 'encendido', true, 6),
+('Router WiFi', 'encendido', false, 7),
+('Luz inteligente exterior', 'encendido', true, 8),
+('Smart TV', 'apagado', false, 9),
+('Persiana automática', 'encendido', false, 10);
 
-INSERT INTO automatizacion (nombre) VALUES
-('Modo Ahorro de Energía'),
-('Modo Seguridad'),
-('Modo Noche'),
-('Modo Vacaciones'),
-('Modo Emergencia');
-
-INSERT INTO usuario (nombre_completo, email, contrasena, id_rol) VALUES
-('Juan Pérez', 'juan@example.com', '1234', 1),
-('Ana Gómez', 'ana@example.com', 'abcd', 2),
-('Carlos Ruiz', 'carlos@example.com', 'pass1', 2),
-('Lucía Fernández', 'lucia@example.com', 'pass2', 2),
-('Pedro Martínez', 'pedro@example.com', 'pass3', 1),
-('Sofía López', 'sofia@example.com', 'pass4', 2),
-('Diego Torres', 'diego@example.com', 'pass5', 2),
-('Valentina Castro', 'valentina@example.com', 'pass6', 2),
-('Martín Rivas', 'martin@example.com', 'pass7', 1),
-('Camila Herrera', 'camila@example.com', 'pass8', 2);
-
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES
-(1, 1),
-(2, 2),
-(1, 3),
-(2, 4),
-(3, 5),
-(4, 6),
-(5, 7),
-(3, 8);
-
-SELECT * FROM rol;
-SELECT * FROM usuario;
-SELECT * FROM casa;
-SELECT * FROM ubicacion;
-SELECT * FROM dispositivo;
-SELECT * FROM automatizacion;
-SELECT * FROM automatizacion_dispositivo;
