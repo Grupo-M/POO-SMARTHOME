@@ -2,21 +2,20 @@ from typing import List, Optional, Tuple
 from conn.db_conn import insert_query, execute_query, update_query, delete_query
 
 class DispositivoDAO:
-    def insertar_objeto(self, nombre, estado, esencial, id_ubicacion):
+    def insertar_objeto(self, nombre: str, estado: str, esencial: int, id_ubicacion: int, id_usuario: Optional[int] = None) -> bool:
         query = """
-            INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion, id_usuario)
+            VALUES (%s, %s, %s, %s, %s)
         """
-        valores = (nombre, estado, esencial, id_ubicacion)
+        valores = (nombre, estado, esencial, id_ubicacion, id_usuario)
         return insert_query(query, valores)
 
     def obtener_todos(self) -> Optional[List[Tuple]]:
-        query = "SELECT id_dispositivo, nombre, estado, esencial, id_ubicacion FROM dispositivo"
+        query = "SELECT id_dispositivo, nombre, estado, esencial, id_ubicacion, id_usuario FROM dispositivo"
         return execute_query(query)
 
     def obtener_por_usuario(self, id_usuario: int) -> Optional[List[Tuple]]:
-        # Si querés filtrar por usuario, tu tabla debe tener una columna id_usuario
-        query = "SELECT id_dispositivo, nombre, estado, esencial, id_ubicacion FROM dispositivo WHERE id_usuario = %s"
+        query = "SELECT id_dispositivo, nombre, estado, esencial, id_ubicacion, id_usuario FROM dispositivo WHERE id_usuario = %s"
         return execute_query(query, (id_usuario,))
 
     def actualizar_estado(self, id_dispositivo: int, nuevo_estado: str) -> bool:

@@ -1,24 +1,69 @@
--- Archivo: datos_iniciales.sql
--- Proyecto: SmartHome - Evidencia 6
--- Descripción: Inserción de datos iniciales para poblar la base de datos smarthome_db
--- Requiere que la base de datos y las tablas estén creadas previamente
-
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS smarthome_db;
 USE smarthome_db;
 
--- Tabla: rol
-INSERT INTO rol (nombre, descripcion) VALUES
-('usuario', 'Permisos básicos para controlar dispositivos'),
-('administrador', 'Acceso completo al sistema'),
-('técnico', 'Gestión técnica de dispositivos'),
-('invitado', 'Acceso limitado a ciertas funciones'),
-('seguridad', 'Monitoreo de sensores y alarmas'),
-('mantenimiento', 'Control de dispositivos esenciales'),
-('automatizador', 'Diseño de reglas de automatización'),
-('auditor', 'Revisión de actividad del sistema'),
-('propietario', 'Dueño de la casa inteligente'),
-('desarrollador', 'Acceso a funciones avanzadas y pruebas');
+-- --- Tablas ---
+CREATE TABLE IF NOT EXISTS rol (
+    id_rol INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(100) NOT NULL
+);
 
--- Tabla: casa
+CREATE TABLE IF NOT EXISTS usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    id_rol INT NOT NULL,
+    FOREIGN KEY (id_rol) REFERENCES rol(id_rol)
+);
+
+CREATE TABLE IF NOT EXISTS casa (
+    id_casa INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    direccion VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS ubicacion (
+    id_ubicacion INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    id_casa INT NOT NULL,
+    FOREIGN KEY (id_casa) REFERENCES casa(id_casa)
+);
+
+CREATE TABLE IF NOT EXISTS dispositivo (
+    id_dispositivo INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    estado VARCHAR(20) DEFAULT 'apagado',
+    esencial BOOLEAN NOT NULL,
+    id_ubicacion INT NOT NULL,
+    id_usuario INT NULL,
+    FOREIGN KEY (id_ubicacion) REFERENCES ubicacion(id_ubicacion),
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+);
+
+CREATE TABLE IF NOT EXISTS automatizacion (
+    id_automatizacion INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS automatizacion_dispositivo (
+    id_automatizacion INT NOT NULL,
+    id_dispositivo INT NOT NULL,
+    PRIMARY KEY (id_automatizacion, id_dispositivo),
+    FOREIGN KEY (id_automatizacion) REFERENCES automatizacion(id_automatizacion),
+    FOREIGN KEY (id_dispositivo) REFERENCES dispositivo(id_dispositivo)
+);
+
+-- --- Datos iniciales ---
+
+-- Roles
+INSERT INTO rol (nombre, descripcion) VALUES
+('administrador', 'Acceso completo al sistema'),
+('usuario', 'Permisos básicos para controlar dispositivos');
+
+-- Casas
 INSERT INTO casa (nombre, direccion) VALUES
 ('Casa Carolina', 'Av. Córdoba 123, Almafuerte'),
 ('Casa Julia', 'Calle San Martín 456, Almafuerte'),
@@ -31,19 +76,24 @@ INSERT INTO casa (nombre, direccion) VALUES
 ('Casa Facundo', 'Av. General Paz 1000, Córdoba'),
 ('Casa Diego', 'Av Libertadores 365, Córdoba');
 
--- Tabla: usuario
-INSERT INTO usuario (nombre_completo, email, contrasena, id_rol) VALUES
-('Carolina Lanfranco', 'caro14@gmail.com', 'Oreo4', 1),
-('Julia Lanfranco', 'julia2@gmail.com', 'cooni123', 2),
-('Martín Paez ', 'martin_Paez@gmail.com', 'Polar123', 3),
-('Micaela Lopez', 'micalopez@gmail.com', 'Luna456', 4),
-('Solange Martinez ', 'Solange@gmail.com', 'Estrella7', 5),
-('Catalina arnosio', 'Cataarno@gmail.com', 'Hups82', 6),
-('Matias Rodriguez', 'MatiRo@gmail.com', 'nose69', 7),
-('Rocio Altamirano', 'Rochi@gmail.com', 'jaja2', 8),
-('Facundo Rodriguez', 'facu.r@gmail.com', 'Luchi5', 9),
-('Diego Cordoba', 'DiegoCord@gmail.com', 'Ave78', 10);
+-- Usuarios
+-- Administrador inicial
+INSERT INTO usuario (nombre, apellido, email, password, id_rol) VALUES
+('Carolina', 'Lanfranco', 'caro14@gmail.com', 'Oreo4', 1);
 
+-- Usuarios estándar
+INSERT INTO usuario (nombre, apellido, email, password, id_rol) VALUES
+('Julia', 'Lanfranco', 'julia2@gmail.com', 'cooni123', 2),
+('Martín', 'Paez', 'martin_Paez@gmail.com', 'Polar123', 2),
+('Micaela', 'Lopez', 'micalopez@gmail.com', 'Luna456', 2),
+('Solange', 'Martinez', 'Solange@gmail.com', 'Estrella7', 2),
+('Catalina', 'Arnosio', 'Cataarno@gmail.com', 'Hups82', 2),
+('Matias', 'Rodriguez', 'MatiRo@gmail.com', 'nose69', 2),
+('Rocio', 'Altamirano', 'Rochi@gmail.com', 'jaja2', 2),
+('Facundo', 'Rodriguez', 'facu.r@gmail.com', 'Luchi5', 2),
+('Diego', 'Cordoba', 'DiegoCord@gmail.com', 'Ave78', 2);
+
+-- Ubicaciones
 INSERT INTO ubicacion (nombre, id_casa) VALUES
 ('Living', 1),
 ('Cocina', 2),
@@ -56,9 +106,10 @@ INSERT INTO ubicacion (nombre, id_casa) VALUES
 ('Comedor', 9),
 ('Quincho', 10);
 
+-- Dispositivos de ejemplo
 INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion) VALUES
 ('Lámpara LED', 'encendido', true, 1),
-('persiana automatica', 'apagado', true, 2),
+('Persiana automática', 'apagado', true, 2),
 ('Aire acondicionado', 'apagado', false, 3),
 ('Extractor de aire', 'encendido', true, 4),
 ('Cámara de seguridad', 'encendido', true, 5),
@@ -67,62 +118,5 @@ INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion) VALUES
 ('Luz inteligente exterior', 'encendido', true, 8),
 ('Smart TV', 'apagado', false, 9),
 ('Persiana automática', 'encendido', false, 10);
-
--- Tabla: automatizacion
-INSERT INTO automatizacion (nombre) VALUES
-('Encender luces al anochecer'),
-('Apagar luces al amanecer'),
-('Activar cámara de seguridad al salir'),
-('Encender aire acondicionado si hace calor'),
-('Apagar termotanque por la noche'),
-('Encender extractor al detectar humedad'),
-('Reiniciar router cada madrugada'),
-('Bajar persianas al atardecer'),
-('Activar persiana automática en cocina'),
-('Encender Smart TV para modo cine');
-
--- Dispositivos adicionales en Garage
-INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion) VALUES
-('Sensor de movimiento', 'encendido', true, 5),
-('Alarma sonora', 'apagado', true, 5);
-
--- Dispositivos adicionales en Living
-INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion) VALUES
-('Parlante inteligente', 'encendido', false, 1),
-('Control de cortinas', 'apagado', false, 1);
-
-
-
-
--- Automatización 1: Encender luces al anochecer → Lámpara LED (Living)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (1, 1);
-
--- Automatización 2: Apagar luces al amanecer → Luz inteligente exterior (Patio)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (2, 8);
-
--- Automatización 3: Activar cámara de seguridad al salir → Cámara de seguridad (Garage)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (3, 5);
-
--- Automatización 4: Encender aire acondicionado si hace calor → Aire acondicionado (Dormitorio)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (4, 3);
-
--- Automatización 5: Apagar termotanque por la noche → Termotanque (Lavadero)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (5, 6);
-
--- Automatización 6: Encender extractor al detectar humedad → Extractor de aire (Baño)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (6, 4);
-
--- Automatización 7: Reiniciar router cada madrugada → Router WiFi (Oficina)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (7, 7);
-
--- Automatización 8: Bajar persianas al atardecer → Persiana automática (Quincho)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (8, 10);
-
--- Automatización 9: Activar persiana automática en cocina → Persiana automática (Cocina)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (9, 2);
-
--- Automatización 10: Encender Smart TV para modo cine → Smart TV (Comedor)
-INSERT INTO automatizacion_dispositivo (id_automatizacion, id_dispositivo) VALUES (10, 9);
-
 
 
