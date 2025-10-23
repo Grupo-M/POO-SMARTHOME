@@ -5,10 +5,10 @@ Clase DAO para la entidad Rol del sistema SmartHome.
 from typing import Optional, List
 from dominio.rol import Rol
 from conn.db_conn import execute_query, insert_query, update_query, delete_query
+from interfaces.irol_dao import IRolDAO
 
-
-class RolDAO:
-    """Clase encargada de manejar el acceso a datos de la tabla Rol."""
+class RolDAO(IRolDAO):
+    
 
     def insertar(self, rol: Rol) -> bool:
         """Inserta un nuevo rol en la base de datos."""

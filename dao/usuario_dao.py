@@ -1,9 +1,12 @@
+from typing import List, Optional
 from dominio.usuario import Usuario
 from dominio.rol import Rol
-from typing import List, Optional
 from conn.db_conn import insert_query, execute_query, update_query, delete_query
+from interfaces.iusuario_dao import IUsuarioDAO  
 
-class UsuarioDAO:
+
+class UsuarioDAO(IUsuarioDAO):  
+    """Implementación concreta del acceso a datos para la entidad Usuario."""
 
     def guardar(self, usuario: Usuario) -> bool:
         query = """
@@ -89,5 +92,3 @@ class UsuarioDAO:
     def eliminar_por_email(self, email: str) -> None:
         query = "DELETE FROM usuario WHERE email = %s"
         delete_query(query, (email,))
-
-
