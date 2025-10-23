@@ -9,19 +9,16 @@ class IDispositivoDAO(ABC):
     """
 
     @abstractmethod
-    def insertar_objeto(self, nombre: str, estado: str, esencial: int, id_ubicacion: int, id_usuario: Optional[int] = None) -> bool:
+    def insertar_objeto(self, nombre: str, estado: str, esencial: int, id_ubicacion: int) -> bool:
         """Inserta un nuevo dispositivo en la base de datos."""
         pass
+
 
     @abstractmethod
     def obtener_todos(self) -> Optional[List[Tuple]]:
         """Obtiene todos los dispositivos registrados en la base de datos."""
         pass
 
-    @abstractmethod
-    def obtener_por_usuario(self, id_usuario: int) -> Optional[List[Tuple]]:
-        """Obtiene los dispositivos asociados a un usuario específico."""
-        pass
 
     @abstractmethod
     def actualizar_estado(self, id_dispositivo: int, nuevo_estado: str) -> bool:

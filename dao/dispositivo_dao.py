@@ -4,22 +4,18 @@ from interfaces.idispositivo_dao import IDispositivoDAO
 from conn.db_crud import insert_query, execute_query, update_query, delete_query
 
 class DispositivoDAO(IDispositivoDAO):
-    
-    def insertar_objeto(self, nombre: str, estado: str, esencial: int, id_ubicacion: int, id_usuario: Optional[int] = None) -> bool:
+
+    def insertar_objeto(self, nombre: str, estado: str, esencial: int, id_ubicacion: int) -> bool:
         query = """
-            INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion, id_usuario)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO dispositivo (nombre, estado, esencial, id_ubicacion)
+            VALUES (%s, %s, %s, %s)
         """
-        valores = (nombre, estado, esencial, id_ubicacion, id_usuario)
+        valores = (nombre, estado, esencial, id_ubicacion)
         return insert_query(query, valores)
 
     def obtener_todos(self) -> Optional[List[Tuple]]:
-        query = "SELECT id_dispositivo, nombre, estado, esencial, id_ubicacion, id_usuario FROM dispositivo"
+        query = "SELECT id_dispositivo, nombre, estado, esencial, id_ubicacion FROM dispositivo"
         return execute_query(query)
-
-    def obtener_por_usuario(self, id_usuario: int) -> Optional[List[Tuple]]:
-        query = "SELECT id_dispositivo, nombre, estado, esencial, id_ubicacion, id_usuario FROM dispositivo WHERE id_usuario = %s"
-        return execute_query(query, (id_usuario,))
 
     def actualizar_estado(self, id_dispositivo: int, nuevo_estado: str) -> bool:
         query = "UPDATE dispositivo SET estado = %s WHERE id_dispositivo = %s"
@@ -39,4 +35,3 @@ class DispositivoDAO(IDispositivoDAO):
         query = "DELETE FROM dispositivo WHERE id_dispositivo = %s"
         valores = (id_dispositivo,)
         return delete_query(query, valores)
-

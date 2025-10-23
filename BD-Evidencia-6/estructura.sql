@@ -44,10 +44,9 @@ CREATE TABLE IF NOT EXISTS dispositivo (
     estado VARCHAR(20) DEFAULT 'apagado',
     esencial BOOLEAN NOT NULL,
     id_ubicacion INT NOT NULL,
-    id_usuario INT NULL,
-    FOREIGN KEY (id_ubicacion) REFERENCES ubicacion(id_ubicacion),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
+    FOREIGN KEY (id_ubicacion) REFERENCES ubicacion(id_ubicacion)
 );
+
 
 
 CREATE TABLE IF NOT EXISTS automatizacion (

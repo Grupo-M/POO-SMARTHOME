@@ -22,7 +22,7 @@ def menu_principal():
 def menu_usuario():
     print("\n--- Menú Usuario Estándar ---")
     print("1. Ver mis datos personales")
-    print("2. Ver mis dispositivos")
+    print("2. Ver dispositivos disponibles")
     print("3. Cerrar sesión")
     return input("Seleccione una opción: ")
 
@@ -117,10 +117,6 @@ def menu_roles():
                     continue
 
                 rol_nuevo = rol_dao.obtener_por_id(id_rol_nuevo)
-                if not rol_nuevo:
-                    print("Rol no encontrado.")
-                    continue
-
                 usuario_seleccionado.rol = rol_nuevo
                 usuario_dao.modificar(usuario_seleccionado)
                 print(f"Rol de {usuario_seleccionado.nombre} actualizado a {rol_nuevo.nombre}.")
@@ -251,12 +247,12 @@ def main():
                             print(f"Email: {usuario.email}")
                             print(f"Rol: {usuario.rol.nombre}")
                         elif op == "2":
-                            dispositivos = gestor_dispositivos.listar_por_usuario(usuario.id_usuario)
+                            dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
                                 for d in dispositivos:
                                     print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
                             else:
-                                print("No tiene dispositivos asignados.")
+                                print("No hay dispositivos registrados.")
                         elif op == "3":
                             print("Cerrando sesión de usuario...")
                             break
@@ -287,5 +283,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
