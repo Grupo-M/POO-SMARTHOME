@@ -5,7 +5,7 @@ from dominio.rol import Rol
 from dominio.usuario import Usuario
 from dominio.gestor_dispositivos import GestorDispositivos
 
-# Instancias DAO y gestor
+# --- Instancias DAO y Gestor ---
 usuario_dao = UsuarioDAO()
 rol_dao = RolDAO()
 ubicacion_dao = UbicacionDAO()
@@ -33,7 +33,8 @@ def menu_administrador():
     print("3. Modificar estado de dispositivo")
     print("4. Eliminar dispositivo")
     print("5. Gestión de roles")
-    print("6. Cerrar sesión")
+    print("6. Eliminar usuario")
+    print("7. Cerrar sesión")
     return input("Seleccione una opción: ")
 
 def menu_roles():
@@ -155,6 +156,7 @@ def main():
                                     print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
                             else:
                                 print("No hay dispositivos registrados.")
+
                         elif op == "2":
                             nombre = input("Nombre del dispositivo: ")
                             estado = input("Estado inicial (encendido/apagado): ").lower()
@@ -171,6 +173,7 @@ def main():
                                     print("Error al agregar el dispositivo.")
                             except ValueError:
                                 print("ID inválido.")
+
                         elif op == "3":
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
@@ -190,29 +193,56 @@ def main():
                                 print("No hay dispositivos registrados.")
 
                         elif op == "4":
-                                    dispositivos = gestor_dispositivos.listar_dispositivos()
-                                    if dispositivos:
-                                        print("\nDispositivos disponibles:")
-                                        for d in dispositivos:
-                                            print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
-                                        try:
-                                            id_disp = int(input("\nID del dispositivo a eliminar: "))
-                                            if gestor_dispositivos.eliminar_dispositivo(id_disp):
-                                                print("Dispositivo eliminado.")
-                                            else:
-                                                print("Error al eliminar el dispositivo.")
-                                        except ValueError:
-                                            print("ID inválido.")
+                            dispositivos = gestor_dispositivos.listar_dispositivos()
+                            if dispositivos:
+                                print("\nDispositivos disponibles:")
+                                for d in dispositivos:
+                                    print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                                try:
+                                    id_disp = int(input("\nID del dispositivo a eliminar: "))
+                                    if gestor_dispositivos.eliminar_dispositivo(id_disp):
+                                        print("Dispositivo eliminado.")
                                     else:
-                                         print("No hay dispositivos registrados.")
+                                        print("Error al eliminar el dispositivo.")
+                                except ValueError:
+                                    print("ID inválido.")
+                            else:
+                                print("No hay dispositivos registrados.")
 
                         elif op == "5":
                             menu_roles()
-                        elif op == "6":
+
+                        elif op == "6":  # Eliminar usuario
+                            usuarios = usuario_dao.listar_todos()
+                            usuarios_estandar = [u for u in usuarios if u.rol.id_rol != 1]
+
+                            if not usuarios_estandar:
+                                print("No hay usuarios estándar para eliminar.")
+                                continue
+
+                            print("\nUsuarios disponibles para eliminar:")
+                            for u in usuarios_estandar:
+                                print(f"ID: {u.id_usuario} - {u.nombre} {u.apellido} - Email: {u.email} - Rol: {u.rol.nombre}")
+
+                            email_usuario = input("Ingrese el email del usuario a eliminar: ")
+                            usuario_seleccionado = usuario_dao.obtener_por_email(email_usuario)
+
+                            if usuario_seleccionado and usuario_seleccionado.rol.id_rol != 1:
+                                confirmacion = input(f"¿Está seguro que quiere eliminar a {usuario_seleccionado.nombre}? (si/no): ").lower()
+                                if confirmacion == "si":
+                                    usuario_dao.eliminar_por_email(email_usuario)
+                                    print(f"{usuario_seleccionado.nombre} eliminado correctamente.")
+                                else:
+                                    print("Eliminación cancelada.")
+                            else:
+                                print("No se puede eliminar a un administrador o el usuario no existe.")
+
+                        elif op == "7":
                             print("Cerrando sesión de administrador...")
                             break
                         else:
                             print("Opción inválida.")
+
                 else:  # Usuario estándar
                     while True:
                         op = menu_usuario()
@@ -226,12 +256,13 @@ def main():
                                 for d in dispositivos:
                                     print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
                             else:
-                                print("No tenés dispositivos asignados.")
+                                print("No tiene dispositivos asignados.")
                         elif op == "3":
                             print("Cerrando sesión de usuario...")
                             break
                         else:
                             print("Opción inválida.")
+
             else:
                 print("Credenciales incorrectas. Intente nuevamente.")
 
@@ -254,7 +285,7 @@ def main():
         else:
             print("Opción inválida.")
 
-
-
 if __name__ == "__main__":
     main()
+
+

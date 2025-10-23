@@ -1,9 +1,8 @@
 from typing import List, Optional
 from dominio.usuario import Usuario
 from dominio.rol import Rol
-from conn.db_conn import insert_query, execute_query, update_query, delete_query
 from interfaces.iusuario_dao import IUsuarioDAO  
-
+from conn.db_crud import insert_query, execute_query, update_query, delete_query
 
 class UsuarioDAO(IUsuarioDAO):  
     """Implementación concreta del acceso a datos para la entidad Usuario."""

@@ -1,6 +1,6 @@
 from typing import List
 from dominio.ubicacion import Ubicacion
-from conn.db_conn import execute_query
+from conn.db_crud import execute_query
 from interfaces.iubicacion_dao import IUbicacionDAO
 from dominio.casa import Casa
 

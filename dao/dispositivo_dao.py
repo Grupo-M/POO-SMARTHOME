@@ -1,6 +1,8 @@
+
 from typing import List, Optional, Tuple
-from conn.db_conn import insert_query, execute_query, update_query, delete_query
 from interfaces.idispositivo_dao import IDispositivoDAO
+from conn.db_crud import insert_query, execute_query, update_query, delete_query
+
 class DispositivoDAO(IDispositivoDAO):
     
     def insertar_objeto(self, nombre: str, estado: str, esencial: int, id_ubicacion: int, id_usuario: Optional[int] = None) -> bool:

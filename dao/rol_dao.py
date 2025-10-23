@@ -4,8 +4,8 @@ Clase DAO para la entidad Rol del sistema SmartHome.
 """
 from typing import Optional, List
 from dominio.rol import Rol
-from conn.db_conn import execute_query, insert_query, update_query, delete_query
 from interfaces.irol_dao import IRolDAO
+from conn.db_crud import insert_query, execute_query, update_query, delete_query
 
 class RolDAO(IRolDAO):
     
