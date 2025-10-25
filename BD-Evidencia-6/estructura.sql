@@ -1,6 +1,6 @@
 
 
--- Crear base de datos
+
 CREATE DATABASE IF NOT EXISTS smarthome_db;
 USE smarthome_db;
 

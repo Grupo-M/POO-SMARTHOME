@@ -1,24 +1,29 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from dominio.dispositivo import Dispositivo
+from dominio.casa import Casa
 from dominio.ubicacion import Ubicacion
 
-def test_cambiar_estado_dispositivo():
-    ubicacion = Ubicacion(1, "Cocina")
 
-    dispositivo = Dispositivo(
-        id_dispositivo=1,
-        nombre="Luz cocina",
-        esencial=True,
-        ubicacion=ubicacion
-    )
+def crear_dispositivo():
+    casa = Casa(1, "Casa")
+    ubic = Ubicacion(1, "Living", casa)
+    return Dispositivo(1, "Lámpara", "apagado", False, ubic)
 
-    assert dispositivo.estado == "apagado"
 
-    dispositivo.cambiar_estado()
-    assert dispositivo.estado == "encendido"
+def test_encender_dispositivo():
+    d = crear_dispositivo()
+    d.encender()
+    assert d.estado == "encendido"
 
-    dispositivo.cambiar_estado()
-    assert dispositivo.estado == "apagado"
+
+def test_apagar_dispositivo():
+    d = crear_dispositivo()
+    d.encender()
+    d.apagar()
+    assert d.estado == "apagado"
+
+
+def test_cambiar_estado():
+    d = crear_dispositivo()
+    d.cambiar_estado()
+    assert d.estado == "encendido"
+

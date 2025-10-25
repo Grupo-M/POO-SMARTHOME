@@ -1,11 +1,19 @@
-import unittest
-from dominio import Casa  
+import pytest
+from dominio.casa import Casa
 
-class TestCasa(unittest.TestCase):
-    def test_inicializacion(self):
-        c = Casa(id_casa=1, nombre="Mi Casa")
-        self.assertEqual(c.id_casa, 1)
-        self.assertEqual(c.nombre, "Mi Casa")
 
-if __name__ == "__main__":
-    unittest.main()
+def test_casa_creacion_valida():
+    casa = Casa(10, "Mi Hogar")
+    assert casa.id_casa == 10
+    assert casa.nombre == "Mi Hogar"
+
+
+def test_cambiar_nombre_casa_valido():
+    casa = Casa(2, "Antes")
+    casa.nombre = "Después"
+    assert casa.nombre == "Después"
+
+
+def test_casa_nombre_invalido():
+    with pytest.raises(ValueError):
+        Casa(3, "   ")

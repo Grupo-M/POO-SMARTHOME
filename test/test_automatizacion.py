@@ -1,18 +1,27 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from dominio.automatizacion import Automatizacion
+from dominio.dispositivo import Dispositivo
+from dominio.casa import Casa
+from dominio.ubicacion import Ubicacion
 
-def test_activar_modo_ahorro():
+
+def test_activar_modo_ahorro_apaga_dispositivos():
+    casa = Casa(1, "Principal")
+    ubicacion = Ubicacion(1, "Sala", casa)
+
+    d1 = Dispositivo(1, "Luz", "encendido", False, ubicacion)
+    d2 = Dispositivo(2, "Ventilador", "encendido", False, ubicacion)
+    dispositivos = [d1, d2]
+
     auto = Automatizacion("Modo Ahorro")
-    dispositivos = [
-        {"nombre": "Luz", "estado": "encendido"},
-        {"nombre": "Ventilador", "estado": "encendido"}
-    ]
-    resultado = auto.activar_modo_ahorro(dispositivos)
-    esperado = [
-        {"nombre": "Luz", "estado": "apagado"},
-        {"nombre": "Ventilador", "estado": "apagado"}
-    ]
-    assert resultado == esperado
+    auto.activar_modo_ahorro(dispositivos)
+
+    assert d1.estado == "apagado"
+    assert d2.estado == "apagado"
+
+
+def test_automatizacion_nombre_valido():
+    auto = Automatizacion("Modo Eco")
+    assert auto.nombre == "Modo Eco"
+
+
+
