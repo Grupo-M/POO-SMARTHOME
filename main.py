@@ -4,6 +4,7 @@ from dao.ubicacion_dao import UbicacionDAO
 from dominio.rol import Rol
 from dominio.usuario import Usuario
 from dominio.gestor_dispositivos import GestorDispositivos
+from dominio.dispositivo import Dispositivo
 
 # --- Instancias DAO y Gestor ---
 usuario_dao = UsuarioDAO()
@@ -145,41 +146,49 @@ def main():
                 if usuario.rol.id_rol == 1:  # Administrador
                     while True:
                         op = menu_administrador()
-                        if op == "1":
+                        if op == "1":  # Listar dispositivos
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
                                 for d in dispositivos:
-                                    print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                                    print(d)
                             else:
                                 print("No hay dispositivos registrados.")
 
-                        elif op == "2":
+                        elif op == "2":  # Agregar dispositivo
                             nombre = input("Nombre del dispositivo: ")
                             estado = input("Estado inicial (encendido/apagado): ").lower()
                             esencial = input("¿Es esencial? (s/n): ").lower() == "s"
                             ubicaciones = ubicacion_dao.obtener_todas()
+                            if not ubicaciones:
+                                print("No hay ubicaciones registradas. Primero agregue una ubicación.")
+                                continue
                             print("Ubicaciones disponibles:")
                             for u in ubicaciones:
                                 print(f"{u.id_ubicacion} - {u.nombre}")
                             try:
                                 id_ubicacion = int(input("ID de ubicación: "))
-                                if gestor_dispositivos.agregar_dispositivo(nombre, estado, esencial, id_ubicacion):
+                                ubicacion_seleccionada = ubicacion_dao.obtener_por_id(id_ubicacion)
+                                if not ubicacion_seleccionada:
+                                    print("Ubicación no válida.")
+                                    continue
+                                nuevo_disp = Dispositivo(None, nombre, estado, esencial, ubicacion_seleccionada)
+                                if gestor_dispositivos.agregar_dispositivo(nuevo_disp):
                                     print("Dispositivo agregado correctamente.")
                                 else:
                                     print("Error al agregar el dispositivo.")
                             except ValueError:
-                                print("ID inválido.")
+                                print("ID de ubicación inválido.")
 
-                        elif op == "3":
+                        elif op == "3":  # Modificar estado
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
-                                print("\nDispositivos disponibles:")
                                 for d in dispositivos:
-                                    print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                                    print(d)
                                 try:
                                     id_disp = int(input("\nID del dispositivo a modificar: "))
                                     nuevo_estado = input("Nuevo estado (encendido/apagado): ").lower()
-                                    if gestor_dispositivos.cambiar_estado(id_disp, nuevo_estado):
+                                    disp_obj = next((x for x in dispositivos if x.id_dispositivo == id_disp), None)
+                                    if disp_obj and gestor_dispositivos.cambiar_estado(disp_obj, nuevo_estado):
                                         print("Estado actualizado.")
                                     else:
                                         print("Error al actualizar el estado.")
@@ -188,15 +197,15 @@ def main():
                             else:
                                 print("No hay dispositivos registrados.")
 
-                        elif op == "4":
+                        elif op == "4":  # Eliminar dispositivo
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
-                                print("\nDispositivos disponibles:")
                                 for d in dispositivos:
-                                    print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                                    print(d)
                                 try:
                                     id_disp = int(input("\nID del dispositivo a eliminar: "))
-                                    if gestor_dispositivos.eliminar_dispositivo(id_disp):
+                                    disp_obj = next((x for x in dispositivos if x.id_dispositivo == id_disp), None)
+                                    if disp_obj and gestor_dispositivos.eliminar_dispositivo(disp_obj):
                                         print("Dispositivo eliminado.")
                                     else:
                                         print("Error al eliminar el dispositivo.")
@@ -211,18 +220,14 @@ def main():
                         elif op == "6":  # Eliminar usuario
                             usuarios = usuario_dao.listar_todos()
                             usuarios_estandar = [u for u in usuarios if u.rol.id_rol != 1]
-
                             if not usuarios_estandar:
                                 print("No hay usuarios estándar para eliminar.")
                                 continue
-
                             print("\nUsuarios disponibles para eliminar:")
                             for u in usuarios_estandar:
                                 print(f"ID: {u.id_usuario} - {u.nombre} {u.apellido} - Email: {u.email} - Rol: {u.rol.nombre}")
-
                             email_usuario = input("Ingrese el email del usuario a eliminar: ")
                             usuario_seleccionado = usuario_dao.obtener_por_email(email_usuario)
-
                             if usuario_seleccionado and usuario_seleccionado.rol.id_rol != 1:
                                 confirmacion = input(f"¿Está seguro que quiere eliminar a {usuario_seleccionado.nombre}? (si/no): ").lower()
                                 if confirmacion == "si":
@@ -250,7 +255,7 @@ def main():
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
                                 for d in dispositivos:
-                                    print(f"[{d[0]}] {d[1]} - Estado: {d[2]} - Esencial: {'Sí' if d[3] else 'No'} - Ubicación ID: {d[4]}")
+                                    print(d)
                             else:
                                 print("No hay dispositivos registrados.")
                         elif op == "3":
@@ -267,7 +272,6 @@ def main():
             apellido = input("Apellido: ")
             email = input("Email: ")
             password = input("Password: ")
-
             rol_usuario = rol_dao.obtener_por_id(2)  # ID 2 → Usuario estándar
             nuevo_usuario = Usuario(nombre, apellido, email, password, rol_usuario)
             if usuario_dao.guardar(nuevo_usuario):
@@ -283,3 +287,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -15,7 +15,7 @@ class IDispositivoDAO(ABC):
 
 
     @abstractmethod
-    def obtener_todos(self) -> Optional[List[Tuple]]:
+    def obtener_todos_objetos(self) -> Optional[List[Tuple]]:
         """Obtiene todos los dispositivos registrados en la base de datos."""
         pass
 

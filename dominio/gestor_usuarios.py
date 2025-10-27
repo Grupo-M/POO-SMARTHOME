@@ -2,50 +2,25 @@
 from typing import Optional, List
 from dominio.usuario import Usuario
 from dominio.rol import Rol
-from conn.db_conn import execute_query, update_query, insert_query
+from dao.usuario_dao import UsuarioDAO  # Tu DAO concreto
 
 class GestorUsuarios:
-   
 
-    def __init__(self, admin_usuario: Usuario):
-        """
-        admin_usuario: Usuario que está realizando las operaciones.
-        Solo los administradores pueden cambiar roles de otros usuarios.
-        """
-        if admin_usuario.rol.id_rol != 1:  
+    def __init__(self, admin_usuario: Usuario, usuario_dao: UsuarioDAO):
+        if admin_usuario.rol.id_rol != 1:
             raise PermissionError("Solo administradores pueden usar GestorUsuarios.")
         self.admin_usuario = admin_usuario
-
-    def cambiar_rol(self, usuario_id: int, nuevo_rol: Rol) -> bool:
-        """
-        Cambia el rol de un usuario en la base de datos.
-        """
-        query = "UPDATE usuario SET id_rol = %s WHERE id_usuario = %s"
-        params = (nuevo_rol.id_rol, usuario_id)
-        exito = update_query(query, params)
-        return exito
+        self._usuario_dao = usuario_dao  # Encapsulamos el DAO
 
     def agregar_usuario(self, usuario: Usuario) -> bool:
-        """
-        Agrega un usuario nuevo a la base de datos.
-        """
-        query = """
-            INSERT INTO usuario (nombre, apellido, email, password, id_rol)
-            VALUES (%s, %s, %s, %s, %s)
-        """
-        params = (
-            usuario.nombre,
-            usuario.apellido,
-            usuario.email,
-            usuario.password,
-            usuario.rol.id_rol
-        )
-        return insert_query(query, params)
+        # Aquí podemos poner validaciones de negocio
+        return self._usuario_dao.guardar(usuario)
 
-    def listar_usuarios(self) -> Optional[List[tuple]]:
-        """
-        Devuelve todos los usuarios de la base de datos.
-        """
-        query = "SELECT id_usuario, nombre, apellido, email, id_rol FROM usuario"
-        return execute_query(query)
+    def listar_usuarios(self) -> Optional[List[Usuario]]:
+        return self._usuario_dao.listar_todos()
 
+    def cambiar_rol(self, usuario_id: int, nuevo_rol: Rol) -> bool:
+        # Validaciones de negocio, por ejemplo que no cambie el rol del admin principal
+        if usuario_id == self.admin_usuario.id_usuario:
+            raise ValueError("No se puede cambiar el rol del usuario administrador actual.")
+        return self._usuario_dao.cambiar_rol(usuario_id, nuevo_rol)
