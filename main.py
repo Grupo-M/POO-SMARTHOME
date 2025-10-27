@@ -6,13 +6,13 @@ from dominio.usuario import Usuario
 from dominio.gestor_dispositivos import GestorDispositivos
 from dominio.dispositivo import Dispositivo
 
-# --- Instancias DAO y Gestor ---
+
 usuario_dao = UsuarioDAO()
 rol_dao = RolDAO()
 ubicacion_dao = UbicacionDAO()
 gestor_dispositivos = GestorDispositivos()
 
-# --- Menús ---
+
 def menu_principal():
     print("\n--- SmartHome Solutions ---")
     print("1. Iniciar sesión")
@@ -130,12 +130,12 @@ def menu_roles():
         else:
             print("Opción inválida.")
 
-# --- Main ---
+-
 def main():
     while True:
         opcion = menu_principal()
 
-        if opcion == "1":  # Iniciar sesión
+        if opcion == "1":  
             email = input("Ingrese su email: ")
             password = input("Ingrese su Password: ")
 
@@ -143,10 +143,10 @@ def main():
             if usuario and usuario.validar_credenciales(email, password):
                 print(f"\nBienvenido, {usuario.nombre} ({usuario.rol.nombre})")
 
-                if usuario.rol.id_rol == 1:  # Administrador
+                if usuario.rol.id_rol == 1:  
                     while True:
                         op = menu_administrador()
-                        if op == "1":  # Listar dispositivos
+                        if op == "1":  
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
                                 for d in dispositivos:
@@ -154,7 +154,7 @@ def main():
                             else:
                                 print("No hay dispositivos registrados.")
 
-                        elif op == "2":  # Agregar dispositivo
+                        elif op == "2":  
                             nombre = input("Nombre del dispositivo: ")
                             estado = input("Estado inicial (encendido/apagado): ").lower()
                             esencial = input("¿Es esencial? (s/n): ").lower() == "s"
@@ -179,7 +179,7 @@ def main():
                             except ValueError:
                                 print("ID de ubicación inválido.")
 
-                        elif op == "3":  # Modificar estado
+                        elif op == "3":  
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
                                 for d in dispositivos:
@@ -197,7 +197,7 @@ def main():
                             else:
                                 print("No hay dispositivos registrados.")
 
-                        elif op == "4":  # Eliminar dispositivo
+                        elif op == "4":  
                             dispositivos = gestor_dispositivos.listar_dispositivos()
                             if dispositivos:
                                 for d in dispositivos:
@@ -217,7 +217,7 @@ def main():
                         elif op == "5":
                             menu_roles()
 
-                        elif op == "6":  # Eliminar usuario
+                        elif op == "6":  
                             usuarios = usuario_dao.listar_todos()
                             usuarios_estandar = [u for u in usuarios if u.rol.id_rol != 1]
                             if not usuarios_estandar:
@@ -244,7 +244,7 @@ def main():
                         else:
                             print("Opción inválida.")
 
-                else:  # Usuario estándar
+                else:  
                     while True:
                         op = menu_usuario()
                         if op == "1":
@@ -267,12 +267,12 @@ def main():
             else:
                 print("Credenciales incorrectas. Intente nuevamente.")
 
-        elif opcion == "2":  # Registrar nuevo usuario
+        elif opcion == "2":  
             nombre = input("Nombre: ")
             apellido = input("Apellido: ")
             email = input("Email: ")
             password = input("Password: ")
-            rol_usuario = rol_dao.obtener_por_id(2)  # ID 2 → Usuario estándar
+            rol_usuario = rol_dao.obtener_por_id(2)  
             nuevo_usuario = Usuario(nombre, apellido, email, password, rol_usuario)
             if usuario_dao.guardar(nuevo_usuario):
                 print("Usuario registrado correctamente.")

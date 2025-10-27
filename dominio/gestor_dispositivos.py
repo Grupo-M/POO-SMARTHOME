@@ -20,7 +20,7 @@ class GestorDispositivos:
         return self.dispositivo_dao.obtener_todos_objetos()
 
     def cambiar_estado(self, dispositivo: Dispositivo, nuevo_estado: str) -> bool:
-        dispositivo.estado = nuevo_estado  # actualiza en memoria
+        dispositivo.estado = nuevo_estado  
         return self.dispositivo_dao.actualizar_estado(dispositivo.id_dispositivo, nuevo_estado)
 
     def eliminar_dispositivo(self, dispositivo: Dispositivo) -> bool:
